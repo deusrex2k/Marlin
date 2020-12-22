@@ -101,7 +101,7 @@ uint16_t ExtRemaining = 0;
 
 void GcodeSuite::M73() {
   if (parser.seenval('P')) ExtProgress = parser.value_byte();
-  if (parser.seenval('R')) ExtRemaining = 60 * parser.value_ulong();//Convert minutes to seconds
+  if (parser.seenval('R')) ExtRemaining = parser.value_ulong();//this is tyipcally converted to seconds, but that makes it too large for a 16bit int and we don't use the seconds
 }
 //END M73 GCODE
 
@@ -1162,9 +1162,9 @@ void Draw_Print_ProgressElapsed() {
 }
 
 void Draw_Print_ProgressRemain() {
-  DWIN_Draw_IntValue(true, true, 1, font8x16, Color_White, Color_Bg_Black, 2, 176, 212, remain_time / 3600);
+  DWIN_Draw_IntValue(true, true, 1, font8x16, Color_White, Color_Bg_Black, 2, 176, 212, remain_time / 60);
   DWIN_Draw_String(false, false, font8x16, Color_White, Color_Bg_Black, 192, 212, F(":"));
-  DWIN_Draw_IntValue(true, true, 1, font8x16, Color_White, Color_Bg_Black, 2, 200, 212, (remain_time % 3600) / 60);
+  DWIN_Draw_IntValue(true, true, 1, font8x16, Color_White, Color_Bg_Black, 2, 200, 212, (remain_time % 3600));
 }
 
 void Goto_PrintProcess() {
